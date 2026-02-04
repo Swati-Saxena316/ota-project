@@ -4,7 +4,7 @@
 // Manifest URL (HTTPS)
 #define OTA_MANIFEST_URL   "https://your-domain.com/firmware/manifest.json"
 
-// Use ESP-IDF cert bundle (recommended)
+// Using ESP-IDF cert bundle
 #define OTA_USE_CRT_BUNDLE  1
 
 #if !OTA_USE_CRT_BUNDLE
