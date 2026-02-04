@@ -2,14 +2,13 @@
 #include <string.h>
 #include <stdio.h>
 
-// These must exist in your LCD driver (rename if different)
+// These must exist in LCD driver (To be renamed if different)
 extern void lcd_clear(void);
 extern void lcd_set_cursor(int col, int row);
 extern void lcd_print(const char *s);
 
 void lcd_init(void)
 {
-    // if your project already initializes LCD elsewhere, keep your original
     lcd_clear();
 }
 
