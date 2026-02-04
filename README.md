@@ -39,8 +39,9 @@ The final implementation guarantees:
 
 ### **Step 1 – System Architecture & OTA Flow Design**
 
+<img width="1536" height="1024" alt="architecture diagram" src="https://github.com/user-attachments/assets/58336d42-4e95-492f-8805-b390cca5da64" />
+
 **Objective:** Define the complete OTA lifecycle and system boundaries.
-<img width="1536" height="1024" alt="architecture diagram" src="https://github.com/user-attachments/assets/2cc3e63c-4d33-4743-bb2f-b8ba4a1ea5e5" />
 
 **Key Outcomes:**
 
@@ -194,23 +195,143 @@ The final implementation guarantees:
 
 ## 🧪 Testing Strategy
 
-Each step was validated independently and cumulatively.
+Testing was performed **incrementally at each step** and **cumulatively across phases**. Below is the **step-wise testing documentation embedded directly into the project README**, providing full traceability from implementation to validation.
 
-### Testing Coverage:
+---
 
-* Step-wise functional testing (Steps 1–10)
-* Integration and regression testing
-* Fault injection:
+### ✅ Step 1 – Architecture & OTA Flow Testing
 
-  * Power loss during OTA
-  * Network drop during download
-  * Invalid manifest
-  * SHA256 mismatch
+**Objective:** Validate correctness of OTA flow design.
 
-### Outcome:
+* Verified all OTA states are reachable and ordered correctly
+* Verified success and failure paths are defined
+* Verified no circular or dead-end states
 
-* Device always remains bootable
-* OTA failures are diagnosable without serial console
+**Result:** OTA flow is deterministic and deadlock-free.
+
+---
+
+### ✅ Step 2 – OTA Trigger Mechanism Testing
+
+**Objective:** Ensure OTA mode entry is intentional.
+
+* Verified correct button combination enters OTA mode
+* Verified normal boot bypasses OTA logic
+* Verified debounce and timing stability
+
+**Result:** OTA trigger is reliable and non-accidental.
+
+---
+
+### ✅ Step 3 – OTA State Machine Testing
+
+**Objective:** Validate state machine correctness.
+
+* Verified each state executes once per loop cycle
+* Verified transitions occur only on valid conditions
+* Verified FAILED state halts OTA flow
+
+**Result:** No race conditions or invalid transitions.
+
+---
+
+### ✅ Step 4 – LCD UI Testing
+
+**Objective:** Validate user feedback for OTA states.
+
+* Verified LCD messages update on every state change
+* Verified no stale or overlapping messages
+
+**Result:** OTA flow is observable without serial console.
+
+---
+
+### ✅ Step 5 – Wi-Fi Auto-Connect Testing
+
+**Objective:** Validate automatic STA connection.
+
+* Verified connection using stored credentials
+* Verified retry limits
+* Verified failure detection
+
+**Result:** Device connects or fails deterministically.
+
+---
+
+### ✅ Step 6 – Basic Wi-Fi Provisioning Testing
+
+**Objective:** Validate recovery when Wi-Fi credentials are missing.
+
+* Verified SoftAP startup
+* Verified provisioning web UI accessibility
+* Verified credential storage in NVS
+
+**Result:** Device becomes Wi-Fi capable after provisioning.
+
+---
+
+### ✅ Step 8 – Advanced Provisioning (Captive Portal) Testing
+
+**Objective:** Validate production-grade provisioning UX.
+
+* Verified DNS wildcard redirection
+* Verified HTTP wildcard redirection
+* Verified provisioning timeout enforcement
+* Verified network test endpoint
+* Verified NVS persistence
+
+**Result:** Provisioning is robust and user-friendly.
+
+---
+
+### ✅ Step 7 – OTA Fundamentals Testing
+
+**Objective:** Validate basic OTA update capability.
+
+* Verified HTTPS firmware download
+* Verified dual-partition awareness
+* Verified reboot into new firmware
+
+**Result:** OTA fundamentals function end-to-end.
+
+---
+
+### ✅ Step 9 – Streaming OTA & Integrity Testing
+
+**Objective:** Validate secure OTA pipeline.
+
+* Verified 4KB chunked download
+* Verified progress monotonicity
+* Verified SHA256 calculation during download
+* Verified firmware size validation
+* Verified SHA mismatch and size mismatch handling
+* Verified power loss and network loss safety
+
+**Result:** OTA is secure, atomic, and fail-safe.
+
+---
+
+### ✅ Step 10 – Production Hardening & Diagnostics Testing
+
+**Objective:** Validate field-support and persistence features.
+
+* Verified OTA status persistence across reboot
+* Verified pending-verify images marked valid
+* Verified rollback detection and logging
+* Verified LCD progress bar and error mapping
+* Verified boot counter increments
+
+**Result:** OTA failures are diagnosable without serial access.
+
+---
+
+### 🔁 Integration & Regression Testing
+
+* Full OTA flow from factory-reset device
+* Provisioning → Wi-Fi → OTA → reboot → validation
+* Multiple sequential OTA cycles
+
+**Result:** No regressions observed across steps.
 
 ---
 
