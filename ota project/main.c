@@ -12,7 +12,6 @@
 
 void app_main(void)
 {
-    // Step 10: persistent OTA diagnostics + rollback/pending verify handling
     ota_diag_init();
     ota_diag_boot_check_and_update();
 
