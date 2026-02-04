@@ -94,7 +94,7 @@ void ota_diag_record_attempt(const char *attempt_version)
 
     nvs_set_str_safe(h, KEY_LAST_ATTEMPT_VER, attempt_version);
 
-    // Also clear rollback flag for a new attempt (optional but useful)
+    // Also clear rollback flag for a new attempt
     nvs_set_u8(h, KEY_ROLLBACK_SEEN, 0);
 
     (void)nvs_commit(h);
@@ -179,7 +179,7 @@ void ota_diag_boot_check_and_update(void)
             {
                 nvs_set_u8(h, KEY_ROLLBACK_SEEN, 1);
                 nvs_set_u8(h, KEY_LAST_STATUS, (uint8_t)OTA_DIAG_STATUS_FAILED);
-                nvs_set_u32(h, KEY_LAST_ERROR, 0xFFFF); // rollback sentinel if you want
+                nvs_set_u32(h, KEY_LAST_ERROR, 0xFFFF); // rollback sentinel
                 (void)nvs_commit(h);
                 nvs_close(h);
             }
@@ -219,7 +219,7 @@ const char* ota_diag_status_str(ota_diag_status_t s)
     }
 }
 
-// Short error strings for LCD (keep them very short)
+// Short error strings for LCD
 const char* ota_diag_error_short_str(uint16_t err)
 {
     // 0xFFFF used above for rollback sentinel
